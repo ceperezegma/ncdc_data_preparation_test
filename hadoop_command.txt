@@ -1,0 +1,9 @@
+hadoop jar /usr/lib/hadoop/hadoop-streaming.jar \
+-D mapred.reduce.task=0 \
+-D mapred.map.tasks.speculative.execution=false \
+-D mapred.task.timeout=12000000 \
+-input ncdc_files_sample.txt \
+-inputformat org.apache.hadoop.mapred.lib.NLineInputFormat \
+-output s3://ncdc-emr-output \
+-mapper dataPreparationNCDC_with_hadoop.sh \
+-file dataPreparationNCDC_with_hadoop.sh
