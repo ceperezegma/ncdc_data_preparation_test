@@ -7,10 +7,10 @@ read offset s3file
 directoryBase=/user/carlos/ncdc-dataset-sample/
 
 # retrieve file from s3 to local disk
-echo "reporter:stats:retrieving $s3file" >&2
+echo "reporter:status:retrieving $s3file" >&2
 # formation of the AWS s3 command
 command="aws s3 cp $s3file $directoryBase"
-# exection of the AWS s3 command
+# execution of the AWS s3 command
 $command
 
 # un-bzip and un-tar the local file
@@ -27,14 +27,13 @@ do
     echo "reporter:status:processed $file" >&2 
 done
 # remove input and intermediary files
-rm -r $directoryBase$target
-rm $directoryBase`basename $s3file`
+#--> rm -r $directoryBase$target
+#--> rm $directoryBase`basename $s3file`
 
 # put the gzipped version into a bucket s3 "ncdc-dataset-all-concatenated"
 echo "reporter:status:gzipping $target and putting in s3" >&2
-gzip $directoryBase$target.all | aws s3 cp
-$directoryBase$target.all.gz s3://ncdc-dataset-sample-concatenated/
+gzip $directoryBase$target.all | aws s3 cp $directoryBase$target.all.gz s3://ncdc-dataset-sample-concatenated/
 
 # delete the gzipped files in the server
-rm $directoryBase$target.all.gz
-echo "reporter:status:compressed & stored in s3 the concatenated file $target.all.gz"    
+#--> rm $directoryBase$target.all.gz
+echo "reporter:status:compressed & stored in s3 the concatenated file $target.all.gz"
